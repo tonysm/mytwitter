@@ -2,4 +2,4 @@
 
 ## installation
 
-Remember to set the AllowOverride to All, and the VirtualHosto has to point to the public directory
+Remember to set the AllowOverride to All, and the VirtualHost has to point to the public directory
