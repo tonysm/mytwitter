@@ -1,0 +1,8 @@
+{
+	"autoload": {
+		"psr-0" : {
+			"MyTwitter" : "vendor/MyTwitter",
+			"App" : "App"
+		}
+	}
+}
