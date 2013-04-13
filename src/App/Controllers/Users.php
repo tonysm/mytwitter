@@ -41,6 +41,9 @@ class Users extends AppController
 		if(!$this->isAllowed()) {
 			return $this->redirect("/");
 		}
+		// $this->Message = $this->loadModel("Message");
+		// $user = $this->Session->getUser();
+		// $messages = $this->Message->findByUserId( $user['id'] );
 		$this->render('users/index');
 	}
 	/**

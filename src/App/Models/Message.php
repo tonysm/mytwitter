@@ -28,7 +28,7 @@ class Message extends AppModel {
 	public function save(array $message)
 	{
 		try {
-			$sql = "INSERT INTO {$this->tabela} (text, user_id) VALUES (:text, :user_id);";
+			$sql = "INSERT INTO {$this->tabela} (text, user_id, created_at) VALUES (:text, :user_id, SYSDATE());";
 
 			$stmt = $this->db->prepare($sql);
 			$stmt->bindValue(":text", strip_tags($message['text']));
