@@ -64,14 +64,6 @@ class User extends AppModel {
 		}
 		return false;
 	}
-
-	/**
-	 * returns the validation first error
-	 * @return string
-	 */
-	public function getValidationError() {
-		return $this->error;
-	}
 	/**
 	 * saves a user into a database
 	 * @param array &$data the data to store
