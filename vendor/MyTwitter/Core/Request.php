@@ -63,6 +63,15 @@ class Request
 		return $this->params;
 	}
 	/**
+	 * return a single param
+	 * @param string $key
+	 * @return mixed
+	 */
+	public function getParam($key)
+	{
+		return isset($this->params[$key]) ? $this->params[$key] : '';
+	}
+	/**
 	 * returns the view class
 	 * @return MyTwitter\View\View
 	 */
@@ -107,9 +116,12 @@ class Request
 	 */
 	private function _setParams()
 	{
-		$this->params = (isset($this->explodedUri[0]) && !empty($this->explodedUri[0]))
-			? $this->explodedUri
-			: array();
+		if (isset($this->explodedUri[0])) {
+			foreach($this->explodedUri as $param) {
+				$exp = explode(":", $param);
+				$this->params[$exp[0]] = $exp[1];
+			}
+		}
 		unset($this->explodedUri);
 	}
 	/**

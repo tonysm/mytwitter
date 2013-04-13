@@ -40,6 +40,16 @@ class Messages extends AppController {
 			return $this->redirect("/users");
 		}
 
+		$param = $this->request->getParam('hash');
+
+		if (!empty($param)) {
+			str_replace("#", "", $param);
+			$this->Message = $this->loadModel("Message");
+			$messages = $this->Message->findByHashTag( $param );
+			$this->set("Hashtag", new Hashtag());
+			$this->set("messages", $messages);
+		}
+
 		$this->render("messages/find");
 	}
 
