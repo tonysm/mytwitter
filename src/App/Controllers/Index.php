@@ -10,6 +10,8 @@ use MyTwitter\Controllers\Controller;
 class Index extends Controller
 {
 	public function get_index() {
-		echo "minha action index";
-	}	
+		$this->set('teste', 'lorem ipsum');
+		$this->render('index/index');
+	}
+
 }

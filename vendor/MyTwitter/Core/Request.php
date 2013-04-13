@@ -1,6 +1,8 @@
 <?php
 namespace MyTwitter\Core;
 
+use MyTwitter\View\HtmlView;
+
 /**
  * class responsable to map the request
  */
@@ -59,6 +61,14 @@ class Request
 	{
 		return $this->params;
 	}
+	/**
+	 * returns the view class
+	 * @return MyTwitter\View\View
+	 */
+	public function getViewClass()
+	{
+		return $this->viewClass;
+	}
 
 	/**
 	 * this is a different kind of set, it doesn't receive params
@@ -101,12 +111,10 @@ class Request
 		unset($this->explodedUri);
 	}
 	/**
-	 * TODO create a View interface
-	 * TODO create a HtmlView Implementation to render common html views
-	 * @return void
+	 * @return MyTwitter\View\View
 	 */
 	private function _setViewClass() {
-		$this->viewClass = new \stdClass();
+		$this->viewClass = new HtmlView();
 	}
 
 }

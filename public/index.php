@@ -5,8 +5,9 @@ session_start();
 
 define("DS", DIRECTORY_SEPARATOR);
 define("PUBLIC_DIR", __DIR__ . DS);
-define("APP_DIR", dirname(PUBLIC_DIR) . DS);
-define("VENDOR_DIR", APP_DIR . "vendor" . DS);
+define("APP_DIR", dirname(PUBLIC_DIR) . DS . "src" . DS . "App" . DS);
+define("VENDOR_DIR", dirname(PUBLIC_DIR) . DS . "vendor" . DS);
+define("VIEWS_DIR", APP_DIR . "View" . DS);
 
 // some app configuration of public directories
 define("IMG_DIR", PUBLIC_DIR . "img" . DS);
