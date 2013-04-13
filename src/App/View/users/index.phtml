@@ -23,10 +23,11 @@
 			<tbody>
 		<?php if(isset($messages) && !empty($messages)): ?>
 			<?php foreach($messages as $message): ?>
+				<?php $text = $Hashtag->replaceHashtags( $message['text'] ); ?>
 				<tr>
 					<td>
 						<strong>@<?=$message['login']?>, <?=(new DateTime($message['created_at']))->format('d/m H:i')?>h,  disse: </strong><br/>
-						&nbsp;<?=$message['text']?>
+						&nbsp;<?=$text?>
 					</td>
 				</tr>
 			<?php endforeach; ?>

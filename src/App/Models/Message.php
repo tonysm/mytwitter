@@ -80,4 +80,30 @@ class Message extends AppModel {
 
 		return array();
 	}
+
+	public function findByHashTag( $term )
+	{
+		try {
+			$sql = "SELECT 
+						m.id, m.text, m.user_id, m.created_at, u.login
+					FROM
+						{$this->tabela} m
+					LEFT JOIN
+						{$this->tabela_users} u ON (m.user_id = u.id)
+					WHERE
+						LOWER(m.text) LIKE LOWER(:term)
+					ORDER BY
+						m.created_at DESC
+					LIMIT 0, 50";
+			$stmt = $this->db->prepare( $sql );
+			$stmt->bindValue(":term", "%#{$term}%");
+			$stmt->execute();
+
+			return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+		} catch (\PDOException $e) {
+			
+		}
+
+		return array();
+	}
 }

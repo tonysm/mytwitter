@@ -2,6 +2,8 @@
 
 namespace App\Controllers;
 
+use App\View\Helpers\Hashtag;
+
 class Users extends AppController
 {
 	/**
@@ -48,6 +50,7 @@ class Users extends AppController
 		$friends = $this->User->findFriendsIds( $user['id'] );
 		$messages = $this->Message->findByUserIdAndFriends( $user['id'], $friends );
 
+		$this->set("Hashtag", new Hashtag());
 		$this->set("messages", $messages);
 		$this->render('users/index');
 	}

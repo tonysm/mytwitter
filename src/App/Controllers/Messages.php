@@ -2,6 +2,8 @@
 
 namespace App\Controllers;
 
+use App\View\Helpers\Hashtag;
+
 class Messages extends AppController {
 	public function post_index()
 	{
@@ -30,5 +32,35 @@ class Messages extends AppController {
 			$this->Session->write("message-class", "error");
 		}
 		return $this->redirect("/Users");
+	}
+
+	public function get_find()
+	{
+		if (!$this->isAllowed()) {
+			return $this->redirect("/users");
+		}
+
+		$this->render("messages/find");
+	}
+
+	public function post_find()
+	{
+		if (!$this->isAllowed()) {
+			return $this->redirect("/users");
+		}
+		$data = $this->request->getData('find');
+		if (!empty($data['term'])) {
+			$term = str_replace("#", "", $data['term']);
+
+			$this->Message = $this->loadModel("Message");
+
+			$messages = $this->Message->findByHashTag( $term );
+		} else {
+			$this->Session->write("message", "Não entendemos o que você está procurando");
+			$messages = array();
+		}
+		$this->set("Hashtag", new Hashtag());
+		$this->set('messages', $messages);
+		$this->render("messages/find");
 	}
 }
