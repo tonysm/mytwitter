@@ -1,1 +1,25 @@
-Lorem ipsum dolor sit amet, consectetur adipisicing elit. Assumenda, quis, molestiae commodi maxime sint voluptatibus at iste vel nisi aut ex quidem ab libero. Nesciunt aliquid asperiores alias ipsa repellat!
+<div class="row">
+	<div class="span6">
+		<h1>Index</h1>
+		<p>Bem-vindo ao MyTwitter, aqui você fica por dentro do que rola no mundo!</p>
+	</div>
+	<div class="span4">
+		<div class="row">
+			<form class="form-signin well" action="Users/login" method="POST">
+				<h2 class="form-signin-heading">Efetue Login</h2>
+				<input name="user[login]" type="text" class="input-block-level" placeholder="Login">
+				<input name="user[senha]" type="password" class="input-block-level" placeholder="Senha">
+				<button class="btn btn-primary" type="submit">Entrar</button>
+			</form>
+		</div>
+		<div class="row">
+			<form class="form-signin well" action="Users" method="POST">
+				<h2 class="form-signin-heading">Cadastre-se</h2>
+				<input name="user[nome]" type="text" class="input-block-level" placeholder="Seu Nome">
+				<input name="user[login]" type="text" class="input-block-level" placeholder="Login">
+				<input name="user[senha]" type="password" class="input-block-level" placeholder="Senha">
+				<button class="btn btn-primary" type="submit">Cadastrar</button>
+			</form>
+		</div>
+	</div>
+</div>
