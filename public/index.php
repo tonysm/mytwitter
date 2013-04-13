@@ -14,7 +14,7 @@ define("CSS_DIR", PUBLIC_DIR . "css" . DS);
 define("JS_DIR", PUBLIC_DIR . "js" . DS);
 
 // autoload file
-$loader = require_once dirname(__DIR__) . DS . "vendor" . DS . "autoload.php";
+$loader = require_once VENDOR_DIR . "autoload.php";
 use MyTwitter\Core\Request,
 	MyTwitter\Core\Dispatcher;
 try {

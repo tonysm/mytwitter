@@ -26,7 +26,6 @@ class Request
 		unset($GET['url']);
 		$this->explodedUri = explode('/', $this->uri);
 		$this->extras = $GET;
-
 		$this->_setController();
 		$this->_setAction();
 		$this->_setParams();
@@ -70,7 +69,7 @@ class Request
 	 */
 	private function _setController()
 	{
-		$this->controller = (isset($this->explodedUri[0])) 
+		$this->controller = (isset($this->explodedUri[0]) && !empty($this->explodedUri[0])) 
 			? ucfirst(strtolower(array_shift($this->explodedUri))) 
 			: 'Index';
 	}
@@ -86,7 +85,7 @@ class Request
 	private function _setAction()
 	{
 		$http_method = strtolower($_SERVER['REQUEST_METHOD']);
-		$this->action = (isset($this->explodedUri[0])) 
+		$this->action = (isset($this->explodedUri[0]) && !empty($this->explodedUri[0])) 
 			? $http_method . '_' . strtolower(array_shift($this->explodedUri)) 
 			: 'get_index';
 	}
@@ -96,9 +95,9 @@ class Request
 	 */
 	private function _setParams()
 	{
-		$this->params = (isset($this->explodedUri[0]))
+		$this->params = (isset($this->explodedUri[0]) && !empty($this->explodedUri[0]))
 			? $this->explodedUri
-			: 0;
+			: array();
 		unset($this->explodedUri);
 	}
 	/**
