@@ -4,6 +4,7 @@ namespace App\Models;
 
 class User extends AppModel {
 	protected $tabela = "users";
+	protected $tabela_friends = "users_friends";
 	protected $error = "";
 	/**
 	 * checks if the data sent is valid to use
@@ -122,4 +123,79 @@ class User extends AppModel {
 
 		return array();
 	}
+	/**
+	 * returns all users that matches with the term
+	 * @param string $term
+	 * @param int $myId meu id
+	 * @return array
+	 */
+	public function findByNomeOrLoginWithoutMe( $term, $myId )
+	{
+		try {
+			$sql = "SELECT 
+						id, nome, login 
+					FROM 
+						{$this->tabela}
+					WHERE 
+						(LOWER(nome) LIKE LOWER(:nome) OR 
+						LOWER(login) LIKE LOWER(:login)) AND 
+						id <> :id ";
+
+			$stmt = $this->db->prepare( $sql );
+			$stmt->bindValue(":nome", "%{$term}%");
+			$stmt->bindValue(":login", "%{$term}%");
+			$stmt->bindValue(":id", $myId);
+			$stmt->execute();
+
+			return $stmt->fetchAll( \PDO::FETCH_ASSOC );
+		} catch( \PDOException $e ) {
+
+		}
+
+		return array();
+	}
+	/**
+	 * the logged user starts following other user
+	 * @param int $user_id
+	 * @param int $friend_id
+	 * @return boolean
+	 */
+	public function follow($user_id, $friend_id)
+	{
+		try {
+			$sql = "INSERT INTO {$this->tabela_friends} (user_id, friend_id)
+					 VALUES (:user_id, :friend_id)";
+			$stmt = $this->db->prepare($sql);
+			$stmt->bindValue(":user_id", $user_id);
+			$stmt->bindValue(":friend_id", $friend_id);
+
+			return $stmt->execute();
+		} catch (\PDOException $e) {
+			
+		}
+
+		return false;
+	}
+	/**
+	 * finds the name of a user by its ID
+	 * @param int $id
+	 * @return string
+	 */
+	public function findNomeById( $id )
+	{
+		try {
+			$sql = "SELECT nome FROM {$this->tabela} WHERE id = :id";
+			$stmt = $this->db->prepare( $sql );
+			$stmt->bindValue(":id", $id);
+			$stmt->execute();
+
+			$result = $stmt->fetch(\PDO::FETCH_ASSOC);
+			return isset($result['nome']) ? $result['nome'] : '';
+		} catch (\PDOException $e) {
+			
+		}
+
+		return "";
+	}
+
 }

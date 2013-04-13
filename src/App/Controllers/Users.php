@@ -84,4 +84,60 @@ class Users extends AppController
 		}
 		return $this->redirect("/");
 	}
+	/**
+	 * action get_find
+	 * @return void
+	 */
+	public function get_find()
+	{
+		if(!$this->isAllowed()){
+			return $this->redirect("/");
+		}
+
+		$this->render("users/find");
+	}
+	/**
+	 * action post_find
+	 * processes the term
+	 * @return 
+	 */
+	public function post_find()
+	{
+		if (!$this->isAllowed()) {
+			return $this->redirect("/");
+		}
+		$data = $this->request->getData('find');
+		$this->User = $this->loadModel("User");
+		$me = $this->Session->getUser();
+
+		$usuarios = $this->User->findByNomeOrLoginWithoutMe( $data['term'], $me['id'] );
+
+		$this->set("usuarios", $usuarios);
+		$this->render('users/find');
+	}
+
+	public function post_follow()
+	{
+		if (!$this->isAllowed()) {
+			return $this->redirect("/");
+		}
+
+		$data = $this->request->getData('follow');
+		$user = $this->Session->getUser();
+		// am I trying to follow me?
+		if ($data['user_id'] === $user['id'] ) {
+			$this->Session->write("message", "Você não pode seguir você mesmo");
+			$this->Session->write("message-class", "info");
+			return $this->redirect("/Users");
+		}
+
+		$this->User = $this->loadModel("User");
+
+		if ($this->User->follow($user['id'], $data['user_id'])) {
+			$nome = $this->User->findNomeById($data['user_id']);
+			$this->Session->write("message", "Agora você já está seguindo <strong>{$nome}</strong>");
+			$this->Session->write("message-class", "success");
+			return $this->redirect("/Users");
+		}
+	}
 }
