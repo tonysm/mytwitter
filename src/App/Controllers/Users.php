@@ -43,7 +43,10 @@ class Users extends AppController
 		}
 		$this->render('users/index');
 	}
-
+	/**
+	 * user login method
+	 * @return void
+	 */
 	public function post_login()
 	{
 		$this->User = $this->loadModel("User");
@@ -68,7 +71,10 @@ class Users extends AppController
 		$this->Session->write("message-class", "error");
 		return $this->redirect("/");
 	}
-
+	/**
+	 * user logout method
+	 * @return void
+	 */
 	public function get_logout()
 	{
 		if($this->isAllowed()) {

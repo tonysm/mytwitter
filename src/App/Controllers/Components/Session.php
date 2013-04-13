@@ -3,8 +3,13 @@
 namespace App\Controllers\Components;
 
 class Session {
-
-	public function __construct() {
+	/**
+	 * get the logged in user
+	 * @return array
+	 */
+	public function getUser()
+	{
+		return isset($_SESSION['user']) ? $_SESSION['user'] : array();
 	}
 	/**
 	 * writes in the session

@@ -71,11 +71,19 @@ class User extends AppModel {
 	public function getValidationError() {
 		return $this->error;
 	}
-
+	/**
+	 * saves a user into a database
+	 * @param array &$data the data to store
+	 * @return boolean
+	 */
 	public function save(array &$data) {
 		return $this->_insert($data);
 	}
-
+	/**
+	 * saves a user into a database using a INSERT sql
+	 * @param array &$data
+	 * @return boolean
+	 */
 	private function _insert(array &$data) {
 		try {
 			$sql = "INSERT INTO `{$this->tabela}` (`nome`, `login`, `senha`) VALUES (:nome, :login, :senha);";
