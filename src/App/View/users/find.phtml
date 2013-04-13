@@ -7,12 +7,12 @@
 				<button type="submit" class="btn">Buscar</button>
 			</fieldset>
 		</form>
-		<?php if(isset($usuarios) && !empty($usuarios)): ?>
-			<table class="table table table-striped table-bordered">
-				<thead>
+		<table class="table table table-striped table-bordered">
+			<thead>
 					<tr>
 						<th colspan="3">Resultado da busca</th>
 					</tr>
+		<?php if(isset($usuarios) && !empty($usuarios)): ?>
 					<tr>
 						<th>Nome</th>
 						<th>Login</th>
@@ -41,11 +41,14 @@
 					</p>
 				<?php endforeach; ?>
 				</tbody>
-			</table>
 		<?php elseif(isset($usuarios) && empty($usuarios)): ?>
-			<ul id="users-find-list">
-				<li>Nenhum usuário encontrado</li>
-			</ul>
+			</thead>
+			<tbody>
+				<tr>
+					<td>Nenhum resultado encontrado</td>
+				</tr>
+			</tbody>
 		<?php endif; ?>
+		</table>
 	</div>
 </div>
