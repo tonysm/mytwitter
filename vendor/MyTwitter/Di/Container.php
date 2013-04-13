@@ -19,4 +19,17 @@ class Container {
 		$model = "App\\Models\\{$modelName}";
 		return new $model( self::getDb() );
 	}
+
+	public static function getComponent( $component )
+	{
+		$component = ucfirst(strtolower($component));
+		$componentFile = "App\\Controllers\\Components\\{$component}";
+
+		switch($component) {
+			case "Auth":
+			case "Session":
+				return new $componentFile( $_SESSION );
+			break;
+		}
+	}
 }

@@ -16,15 +16,20 @@ class Controller
 	protected $request;
 	protected $view;
 
+	public function __construct(Request $request) {
+		$this->request = $request;
+		$this->view = $request->getViewClass();
+	}
+
 	/**
 	 * return a instance of the requested controller
 	 * @static
 	 * @param string the controller name
 	 * @return MyTwitter\Controllers\Controller
 	 */ 
-	public static function getController( $controllerName ) {
+	public static function getController( $controllerName, Request $request ) {
 		$controller = "App\\Controllers\\{$controllerName}";
-		return new $controller();
+		return new $controller( $request );
 	}
 	/**
 	 * loads a model
@@ -35,19 +40,12 @@ class Controller
 		return Container::getModel( $modelName );
 	}
 	/**
-	 * sets the request inside the controller
-	 * @return void
+	 * loads a component
+	 * @param string $componentName the component name
+	 * @return MyTwitter\Controllers\Components\Component
 	 */
-	public function setRequest(Request $req) {
-		$this->request = $req;
-	}
-	/**
-	 * sets the view class
-	 * @param MyTwitter\View\View $View
-	 * @return void
-	 */
-	public function setViewClass(View $View) {
-		$this->view = $View;
+	public function loadComponent( $componentName ) {
+		return Container::getComponent( $componentName );
 	}
 	/**
 	 * renders the view
@@ -65,6 +63,14 @@ class Controller
 	 */
 	protected function set($name, $value) {
 		$this->view->set($name, $value);
+	}
+	/**
+	 * redirects the user
+	 * @param string $route
+	 */
+	protected function redirect( $route ) {
+		header("Location:{$route}");
+		exit();
 	}
 
 }

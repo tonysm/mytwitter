@@ -14,9 +14,7 @@ class Dispatcher
 	 * @return void
 	 */
 	public static function process( Request $request) {
-		$Controller = Controller::getController( $request->getController() );
-		$Controller->setRequest( $request );
-		$Controller->setViewClass( $request->getViewClass() );
+		$Controller = Controller::getController( $request->getController(), $request);
 		$action = $request->getAction();
 
 		if(!method_exists($Controller, $action)) {

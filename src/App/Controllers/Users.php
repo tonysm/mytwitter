@@ -17,13 +17,24 @@ class Users extends AppController
 			// if it is, try to save it
 			if ($this->User->save( $data ) ) {
 				// if save it, send him to his home
-				die('Salvou');
+				$this->Session->write("message", "Seja bem-vindo ao MyTwitter");
+				$this->Session->write("message-class", "success");
+				return $this->redirect("Users/index");
 			} else {
 				// if cannot save it, send a message
-				die('Não Salvou');
+				$this->Session->write("message", "Não conseguiu salvar");
+				$this->Session->write("message-class", "error");
+				return $this->redirect("/");
 			}
 		}
 		// if invalid, send a message
-		die($this->User->getValidationError());
+		$this->Session->write("message", $this->User->getValidationError());
+		$this->Session->write("message-class", "error");
+		return $this->redirect("/");
+	}
+
+	public function get_index()
+	{
+		print_r($this->Session);
 	}
 }

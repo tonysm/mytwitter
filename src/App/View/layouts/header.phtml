@@ -27,4 +27,17 @@
 		</div>
 	</div>
 	<div class="container">
+	<?php
+		$message = $Session->read('message');
+		$messageCls = $Session->read('message-class');
+		$Session->write("message", "");
+		if($message):
+	?>
+	<div class="row">
+		<div class="alert <?=!empty($messageCls) ? 'alert-'. $messageCls : ''?>">
+			<button type="button" class="close" data-dismiss="alert">&times;</button>
+			<strong>Atenção!</strong> <?=$message?>
+		</div>
+	</div>
+	<?php endif; ?>
 <!-- body closes on footer.phtml -->
