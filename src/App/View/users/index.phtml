@@ -14,7 +14,30 @@
 		</div>
 	</div>
 	<div class="span8">
-		<h1>Essa é a página de dentro da aplicação</h1>
-		<p>Bem-vindo ao MyTwitter, aqui você fica por dentro do que rola no mundo!</p>
+		<table class="table table-striped table-bordered">
+			<thead>
+				<tr>
+					<th>Últimas publicações</th>
+				</tr>
+			</thead>
+			<tbody>
+		<?php if(isset($messages) && !empty($messages)): ?>
+			<?php foreach($messages as $message): ?>
+				<tr>
+					<td>
+						<strong>@<?=$message['login']?>, <?=(new DateTime($message['created_at']))->format('d/m H:i')?>h,  disse: </strong><br/>
+						&nbsp;<?=$message['text']?>
+					</td>
+				</tr>
+			<?php endforeach; ?>
+		<?php else: ?>
+				<tr>
+					<td>
+						Não há mensagens no momento
+					</td>
+				</tr>
+		<?php endif; ?>
+			</tbody>
+		</table>
 	</div>
 </div>

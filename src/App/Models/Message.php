@@ -4,6 +4,7 @@ namespace App\Models;
 
 class Message extends AppModel {
 	protected $tabela = "messages";
+	protected $tabela_users = "users";
 	protected $error = "";
 
 	public function isValid(array $data)
@@ -38,5 +39,31 @@ class Message extends AppModel {
 			
 		}
 		return false;
+	}
+
+	public function findByUserId( $user_id )
+	{
+		try {
+			$sql = "SELECT 
+						m.id, m.text, m.user_id, m.created_at, u.login
+					FROM
+						{$this->tabela} m
+					LEFT JOIN
+						{$this->tabela_users} u ON (m.user_id = u.id)
+					WHERE
+						m.user_id = :user_id
+					ORDER BY
+						m.created_at DESC
+					LIMIT 0, 50";
+			$stmt = $this->db->prepare( $sql );
+			$stmt->bindValue(":user_id", $user_id);
+			$stmt->execute();
+
+			return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+		} catch (\PDOException $e) {
+			
+		}
+
+		return array();
 	}
 }
