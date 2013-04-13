@@ -163,18 +163,41 @@ class User extends AppModel {
 	public function follow($user_id, $friend_id)
 	{
 		try {
-			$sql = "INSERT INTO {$this->tabela_friends} (user_id, friend_id)
+			$friends = $this->findFriendsIds($user_id);
+			if(!in_array($friend_id, $friends)) {
+				$sql = "INSERT INTO {$this->tabela_friends} (user_id, friend_id)
 					 VALUES (:user_id, :friend_id)";
-			$stmt = $this->db->prepare($sql);
-			$stmt->bindValue(":user_id", $user_id);
-			$stmt->bindValue(":friend_id", $friend_id);
+				$stmt = $this->db->prepare($sql);
+				$stmt->bindValue(":user_id", $user_id);
+				$stmt->bindValue(":friend_id", $friend_id);
 
-			return $stmt->execute();
+				return $stmt->execute();
+			}
+			return true;
 		} catch (\PDOException $e) {
 			
 		}
 
 		return false;
+	}
+	/**
+	 * gets all the ids of the friends of a given user
+	 * @param int $user_id
+	 * @return array()
+	 */
+	public function findFriendsIds($user_id)
+	{
+		try {
+			$sql = "SELECT friend_id FROM {$this->tabela_friends} WHERE user_id = :user_id";
+			$stmt = $this->db->prepare($sql);
+			$stmt->bindValue(":user_id", $user_id);
+			$stmt->execute();
+
+			return $stmt->fetchAll( \PDO::FETCH_COLUMN);
+		} catch (\PDOException $e) {
+			
+		}
+		return array();
 	}
 	/**
 	 * finds the name of a user by its ID
@@ -196,6 +219,27 @@ class User extends AppModel {
 		}
 
 		return "";
+	}
+	/**
+	 * makes a user stops following another user
+	 * @param int $user_id
+	 * @param int $friend_id
+	 * @return boolean
+	 */
+	public function unfollow($user_id, $friend_id)
+	{
+		try {
+			$sql = "DELETE FROM {$this->tabela_friends} WHERE user_id = :user_id AND friend_id = :friend_id";
+			$stmt = $this->db->prepare($sql);
+			$stmt->bindValue(":user_id", $user_id);
+			$stmt->bindValue(":friend_id", $friend_id);
+
+			return $stmt->execute();
+		} catch (\PDOException $e) {
+			
+		}
+
+		return false;
 	}
 
 }

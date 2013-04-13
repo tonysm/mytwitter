@@ -111,11 +111,16 @@ class Users extends AppController
 		$me = $this->Session->getUser();
 
 		$usuarios = $this->User->findByNomeOrLoginWithoutMe( $data['term'], $me['id'] );
+		$friends = $this->User->findFriendsIds($me['id']);
 
 		$this->set("usuarios", $usuarios);
+		$this->set("friends", $friends);
 		$this->render('users/find');
 	}
-
+	/**
+	 * action to follow a friend
+	 * @return void
+	 */
 	public function post_follow()
 	{
 		if (!$this->isAllowed()) {
@@ -139,5 +144,39 @@ class Users extends AppController
 			$this->Session->write("message-class", "success");
 			return $this->redirect("/Users");
 		}
+
+		$this->Session->write("message", "Ocorreu um erro ao tentar seguir o usuário");
+		$this->Session->write("message-class", "error");
+		return $this->redirect("/Users");
+	}
+
+	public function post_unfollow()
+	{
+		if(!$this->isAllowed()) {
+			return $this->redirect("/");
+		}
+
+		$data = $this->request->getData('unfollow');
+		$user = $this->Session->getUser();
+
+		// am I trying to unfollow me?
+		if ($data['user_id'] === $user['id']) {
+			$this->Session->write("message", "Você não pode deixar de seguir você mesmo");
+			$this->Session->write("message-class", "info");
+			return $this->redirect("/Users");
+		}
+
+		$this->User = $this->loadModel("User");
+
+		if ($this->User->unfollow($user['id'], $data['user_id'])) {
+			$nome = $this->User->findNomeById($data['user_id']);
+			$this->Session->write("message", "Agora você não está seguindo <strong>{$nome}</strong>");
+			$this->Session->write("message-class", "info");
+			return $this->redirect("/Users");
+		}
+
+		$this->Session->write("message", "Ocorreu um erro ao tentar deixar de seguir um usuário");
+		$this->Session->write("message-class", "error");
+		return $this->redirect("/Users");
 	}
 }
