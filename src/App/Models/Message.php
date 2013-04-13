@@ -5,6 +5,7 @@ namespace App\Models;
 class Message extends AppModel {
 	protected $tabela = "messages";
 	protected $tabela_users = "users";
+	protected $tabela_friends = "users_friends";
 	protected $error = "";
 
 	public function isValid(array $data)
@@ -41,9 +42,17 @@ class Message extends AppModel {
 		return false;
 	}
 
-	public function findByUserId( $user_id )
+	public function findByUserIdAndFriends( $user_id, array $friends )
 	{
 		try {
+			// creating the (?,?,?) to put as IN ()
+			$count_friends = count($friends);
+			if($count_friends) {
+				$in_query = implode(",", array_fill(1, $count_friends, "?"));
+				$in_query = " OR m.user_id IN ({$in_query}) ";
+			} else {
+				$in_query = "";
+			}
 			$sql = "SELECT 
 						m.id, m.text, m.user_id, m.created_at, u.login
 					FROM
@@ -51,12 +60,17 @@ class Message extends AppModel {
 					LEFT JOIN
 						{$this->tabela_users} u ON (m.user_id = u.id)
 					WHERE
-						m.user_id = :user_id
+						m.user_id = ? {$in_query}
 					ORDER BY
 						m.created_at DESC
 					LIMIT 0, 50";
 			$stmt = $this->db->prepare( $sql );
-			$stmt->bindValue(":user_id", $user_id);
+			$stmt->bindValue(1, $user_id);
+			if ($count_friends) {
+				foreach($friends as $index => $id) {
+					$stmt->bindValue(($index + 2), $id);
+				}
+			}
 			$stmt->execute();
 
 			return $stmt->fetchAll(\PDO::FETCH_ASSOC);

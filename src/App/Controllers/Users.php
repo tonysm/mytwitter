@@ -42,8 +42,11 @@ class Users extends AppController
 			return $this->redirect("/");
 		}
 		$this->Message = $this->loadModel("Message");
+		$this->User = $this->loadModel("User");
+
 		$user = $this->Session->getUser();
-		$messages = $this->Message->findByUserId( $user['id'] );
+		$friends = $this->User->findFriendsIds( $user['id'] );
+		$messages = $this->Message->findByUserIdAndFriends( $user['id'], $friends );
 
 		$this->set("messages", $messages);
 		$this->render('users/index');
