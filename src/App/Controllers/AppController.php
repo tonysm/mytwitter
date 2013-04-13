@@ -12,8 +12,18 @@ class AppController extends Controller
 
 	public function __construct(Request $request) {
 		parent::__construct( $request );
-		$this->Auth = $this->loadComponent("Auth");
 		$this->Session = $this->loadComponent("Session");
 		$this->set("Session", $this->Session);
+	}
+
+	public function isAllowed()
+	{
+		if (!$this->Session->isAuthenticated()) {
+			$this->Session->write("message", "Você precisa estar logado");
+			$this->Session->write("message-class", "error");
+			return false;
+		}
+
+		return true;
 	}
 }

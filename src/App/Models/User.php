@@ -92,4 +92,26 @@ class User extends AppModel {
 
 		return false;
 	}
+	/**
+	 * find a user by login and senha
+	 * @param string $login
+	 * @param string $senha
+	 * @return array
+	 */
+	public function findByLoginAndSenha($login, $senha)
+	{
+		try {
+			$sql = "SELECT id, nome, login FROM {$this->tabela} WHERE login = :login AND senha = :senha";
+			$stmt = $this->db->prepare($sql);
+			$stmt->bindParam(":login", strtolower($login));
+			$stmt->bindParam(":senha", md5($senha));
+			$stmt->execute();
+
+			return $stmt->fetch( \PDO::FETCH_ASSOC );
+		} catch(\PDOException $e) {
+
+		}
+
+		return array();
+	}
 }

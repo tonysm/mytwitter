@@ -32,9 +32,50 @@ class Users extends AppController
 		$this->Session->write("message-class", "error");
 		return $this->redirect("/");
 	}
-
+	/**
+	 * user index page
+	 * @return void
+	 */
 	public function get_index()
 	{
-		print_r($this->Session);
+		if(!$this->isAllowed()) {
+			return $this->redirect("/");
+		}
+		$this->render('users/index');
+	}
+
+	public function post_login()
+	{
+		$this->User = $this->loadModel("User");
+		$data = $this->request->getData('user');
+
+		if(isset($data) && !empty($data)) {
+			$user = $this->User->findByLoginAndSenha($data['login'], $data['senha']);
+			if(!empty($user)) {
+				$nome = explode(' ',$user['nome'])[0];
+				$this->Session->authenticate($user);
+				$this->Session->write("message", "Olá, {$nome}. Seja bem-vindo!");
+				$this->Session->write("message-class", "success");
+				return $this->redirect("/Users/index");
+			}
+
+			$this->Session->write("message", "Usuário ou senha inválidos");
+			$this->Session->write("message-class", "error");
+			return $this->redirect("/");
+		}
+
+		$this->Session->write("message", "Opps.. preencha o login e a senha");
+		$this->Session->write("message-class", "error");
+		return $this->redirect("/");
+	}
+
+	public function get_logout()
+	{
+		if($this->isAllowed()) {
+			$this->Session->logout();
+			$this->Session->write("message", "Volte sempre");
+			$this->Session->write("message-class", "info");
+		}
+		return $this->redirect("/");
 	}
 }
