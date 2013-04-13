@@ -3,7 +3,8 @@
 namespace MyTwitter\Controllers;
 
 use MyTwitter\Core\Request,
-	MyTwitter\View\View;
+	MyTwitter\View\View,
+	MyTwitter\Di\Container;
 /**
  * base controller class
  */
@@ -24,6 +25,14 @@ class Controller
 	public static function getController( $controllerName ) {
 		$controller = "App\\Controllers\\{$controllerName}";
 		return new $controller();
+	}
+	/**
+	 * loads a model
+	 * @param string $modelName the name of the model
+	 * @return MyTwitter\Models\Model
+	 */
+	public function loadModel( $modelName ) {
+		return Container::getModel( $modelName );
 	}
 	/**
 	 * sets the request inside the controller

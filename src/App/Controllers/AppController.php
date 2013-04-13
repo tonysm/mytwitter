@@ -6,5 +6,4 @@ use MyTwitter\Controllers\Controller;
 
 class AppController extends Controller
 {
-	
 }

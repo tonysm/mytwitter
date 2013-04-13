@@ -13,6 +13,7 @@ class Request
 	private $controller;
 	private $action;
 	private $params;
+	private $extras;
 	/**
 	 * @var the class responsable to render the view
 	 */
@@ -94,7 +95,7 @@ class Request
 	 */
 	private function _setAction()
 	{
-		$http_method = strtolower($_SERVER['REQUEST_METHOD']);
+		$http_method = $this->getHttpMethod();
 		$this->action = (isset($this->explodedUri[0]) && !empty($this->explodedUri[0])) 
 			? strtolower(array_shift($this->explodedUri)) 
 			: 'index';
@@ -116,6 +117,34 @@ class Request
 	 */
 	private function _setViewClass() {
 		$this->viewClass = new HtmlView();
+	}
+	/**
+	 * returns the http verb of the request
+	 * @return string
+	 */
+	private function getHttpMethod()
+	{
+		return strtolower($_SERVER['REQUEST_METHOD']);
+	}
+	/**
+	 * get the data sent by a form
+	 * @param string $indexName the name of the data
+	 * @return array
+	 */
+	public function getData( $indexName ) {
+		$http_verb = $this->getHttpMethod();
+
+		switch($http_verb) {
+			case 'post':
+				return isset($_POST[$indexName]) ? $_POST[$indexName] : array();
+			break;
+			case 'get':
+				return isset($this->extras[$indexName]) ? $this->extras[$indexName] : array();
+			break;
+			default:
+				return array();
+			break;
+		}
 	}
 
 }
