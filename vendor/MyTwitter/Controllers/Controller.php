@@ -12,8 +12,8 @@ class Controller
 	/**
 	 * @var MyTwitter\Core\Request
 	 */
-	private $request;
-	private $view;
+	protected $request;
+	protected $view;
 
 	/**
 	 * return a instance of the requested controller

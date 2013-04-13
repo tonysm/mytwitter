@@ -3,7 +3,7 @@
 namespace MyTwitter\View;
 
 class HtmlView implements View {
-	private $vars = array();
+	protected $vars = array();
 	
 	public function set($varName, $value) {
 		$this->vars[$varName] = $value;

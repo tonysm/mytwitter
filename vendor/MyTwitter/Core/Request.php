@@ -96,8 +96,9 @@ class Request
 	{
 		$http_method = strtolower($_SERVER['REQUEST_METHOD']);
 		$this->action = (isset($this->explodedUri[0]) && !empty($this->explodedUri[0])) 
-			? $http_method . '_' . strtolower(array_shift($this->explodedUri)) 
-			: 'get_index';
+			? strtolower(array_shift($this->explodedUri)) 
+			: 'index';
+		$this->action = $http_method . '_' . $this->action;
 	}
 	/**
 	 * gets the rest of the URI as params
