@@ -67,8 +67,16 @@ class Message extends AppModel {
 		return array();
 	}
 
-	public function findByUserIdAndFriends( $user_id, array $friends )
+	public function findByUserIdAndFriends( $user_id, array $friends, $page = false )
 	{
+		if ($page !== false) {
+			$page = $page == 0 ? 1 : $page;
+			$limit = 10;
+			$start = $page == 1 ? 0 : ($page * $limit) / 2;
+		} else {
+			$start = 0;
+			$limit = 10;
+		}
 		try {
 			// creating the (?,?,?) to put as IN ()
 			$count_friends = count($friends);
@@ -88,7 +96,7 @@ class Message extends AppModel {
 						m.user_id = ? {$in_query}
 					ORDER BY
 						m.created_at DESC
-					LIMIT 0, 50";
+					LIMIT {$start}, {$limit}";
 			$stmt = $this->db->prepare( $sql );
 			$stmt->bindValue(1, $user_id);
 			if ($count_friends) {

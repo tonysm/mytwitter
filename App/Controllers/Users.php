@@ -45,12 +45,13 @@ class Users extends AppController
 		if(!$this->isAllowed()) {
 			return $this->redirect("/");
 		}
+		$page = (int) $this->request->getData('pg');
 		$this->Message = $this->loadModel("Message");
 		$this->User = $this->loadModel("User");
 
 		$user = $this->Session->getUser();
 		$friends = $this->User->findFriendsIds( $user['id'] );
-		$messages = $this->Message->findByUserIdAndFriends( $user['id'], $friends );
+		$messages = $this->Message->findByUserIdAndFriends( $user['id'], $friends, $page );
 
 		$this->set("Hashtag", new Hashtag());
 		$this->set("messages", $messages);

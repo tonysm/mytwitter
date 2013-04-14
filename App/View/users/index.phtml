@@ -40,5 +40,22 @@
 		<?php endif; ?>
 			</tbody>
 		</table>
+		<?php
+			$page = isset($_GET['pg']) ? $_GET['pg'] : 1;
+		?>
+		<ul class="pager">
+			<?php if($page != 1): ?>
+				<li class="previous">
+					<a href="/users?pg=<?=($page-1)?>">&larr; Anterior</a>
+				</li>
+			<?php else: ?>
+				<li class="previous disabled">
+					<a href="#">&larr; Anterior</a>
+				</li>
+			<?php endif; ?>
+			<li class="next">
+				<a href="/users?pg=<?=++$page?>">Próximo &rarr;</a>
+			</li>
+		</ul>
 	</div>
 </div>
