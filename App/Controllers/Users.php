@@ -18,6 +18,8 @@ class Users extends AppController
 		if ($this->User->isValid( $data )) {
 			// if it is, try to save it
 			if ($this->User->save( $data ) ) {
+				$user = $this->User->findByLoginAndSenha($data['login'], $data['senha']);
+				$this->Session->authenticate($user);
 				// if save it, send him to his home
 				$this->Session->write("message", "Seja bem-vindo ao MyTwitter");
 				$this->Session->write("message-class", "success");
