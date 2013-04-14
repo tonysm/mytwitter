@@ -51,14 +51,24 @@ class User extends AppModel {
 	public function exists($id)
 	{
 		try {
-			$sql = "SELECT id FROM {$this->tabela} WHERE id = :id";
+			$user = $this->findById($id);
+
+			return isset($user) && !empty($user);
+		} catch (\PDOException $e) {
+			
+		}
+		return false;
+	}
+
+	public function findById($id)
+	{
+		try {
+			$sql = "SELECT id, nome, login FROM {$this->tabela} WHERE id = :id";
 			$stmt = $this->db->prepare($sql);
 			$stmt->bindValue(":id", $id);
 			$stmt->execute();
 
-			$res = $stmt->fetch(\PDO::FETCH_ASSOC);
-
-			return isset($res['id']);
+			return $stmt->fetch(\PDO::FETCH_ASSOC);
 		} catch (\PDOException $e) {
 			
 		}

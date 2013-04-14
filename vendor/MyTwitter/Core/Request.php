@@ -138,7 +138,11 @@ class Request
 				: 'index';
 			$this->action = $http_method . '_' . $this->action;
 		} else {
-			$this->action = $http_method . '_index';
+			if(isset($this->explodedUri[1]) && !empty($this->explodedUri[1])) {
+				$this->action = $http_method . '_' . strtolower($this->explodedUri[1]);
+			} else {
+				$this->action = $http_method . '_index';
+			}
 		}
 	}
 	/**

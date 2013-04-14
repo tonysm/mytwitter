@@ -23,6 +23,6 @@ class Friends extends AppController {
 		$friends = $this->User->findFriends( $id );
 		
 		$this->set("data", $friends);
-		$this->render("api/result");
+		$this->render("api/list");
 	}
 }

@@ -42,7 +42,7 @@ class Message extends AppModel {
 		return false;
 	}
 
-	public function findById($user_id)
+	public function findByUserId($user_id)
 	{
 		try {
 			$sql = "SELECT
