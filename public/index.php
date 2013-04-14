@@ -8,6 +8,7 @@ define("PUBLIC_DIR", __DIR__ . DS);
 define("APP_DIR", dirname(PUBLIC_DIR) . DS . "App" . DS);
 define("VENDOR_DIR", dirname(PUBLIC_DIR) . DS . "vendor" . DS);
 define("VIEWS_DIR", APP_DIR . "View" . DS);
+define("CONTROLLERS_DIR", APP_DIR . "Controllers" . DS);
 
 // some app configuration of public directories
 define("IMG_DIR", PUBLIC_DIR . "img" . DS);
@@ -22,5 +23,12 @@ try {
 	$Request = new Request( $_GET );
 	Dispatcher::process( $Request );
 } catch(\Exception $e) {
-	die($e->getMessage());
+	$pattern = "/^.*\.json$/";
+	if (preg_match($pattern, $_GET['url'])) {
+		header(":", true, 500);
+		header("Content-type:application/json");
+		require VIEWS_DIR . "error/api.phtml";
+	} else {
+		require VIEWS_DIR . "error/index.phtml";
+	}
 }

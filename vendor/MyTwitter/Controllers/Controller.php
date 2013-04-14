@@ -29,7 +29,20 @@ class Controller
 	 */ 
 	public static function getController( $controllerName, Request $request ) {
 		$controller = "App\\Controllers\\{$controllerName}";
-		return new $controller( $request );
+		if(self::controlllerExists( $controllerName )) {
+			return new $controller( $request );
+		}
+
+		throw new \Exception("Error Processing Request");
+	}
+
+	public static function controlllerExists( $controllerName )
+	{
+		$controllerName = str_replace("\\\\", "/", $controllerName);
+		$controllerName = str_replace("\\", "/", $controllerName);
+		$file = CONTROLLERS_DIR . $controllerName . ".php";
+
+		return file_exists($file);
 	}
 	/**
 	 * loads a model
