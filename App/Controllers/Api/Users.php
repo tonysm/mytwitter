@@ -3,6 +3,10 @@
 namespace App\Controllers\Api;
 
 class Users extends AppController {
+	/**
+	 * @route /users/:id.json
+	 * @return void
+	 */
 	public function get_index()
 	{
 		$id = $this->request->getParam('id');
@@ -25,7 +29,10 @@ class Users extends AppController {
 		$this->set("data", $user);
 		$this->render("api/result");
 	}
-
+	/**
+	 * @route /users/:id/messages.json
+	 * @return void
+	 */
 	public function get_messages()
 	{
 		$id = $this->request->getParam('id');
@@ -49,7 +56,10 @@ class Users extends AppController {
 		$this->set("data", $messages);
 		$this->render("api/list");
 	}
-
+	/**
+	 * route: /users/:id/friends.json
+	 * @return void
+	 */
 	public function get_friends()
 	{
 		$id = $this->request->getParam('id');
