@@ -9,7 +9,7 @@ Remember to set the AllowOverride to All, and the VirtualHost has to point to th
 There's a file on the project root with the schema of the database, called *schema.sql*.
 
 ## API
-There's only two availiable methods, both using the HTTP GET verb, listed below
+There's only three availiable methods, both using the HTTP GET verb, listed below
 
 HTTP VERB | Route | Content-type | Description
 --- | --- | --- | ---
