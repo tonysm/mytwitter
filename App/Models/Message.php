@@ -10,6 +10,7 @@ class Message extends AppModel {
 
 	public function isValid(array $data)
 	{
+		$data['text'] = strip_tags($data['text']);
 		if (!isset($data['text']) || empty($data['text'])) {
 			$this->error = "Mensagem não pode ser publicada em branco";
 			return false;
@@ -50,7 +51,9 @@ class Message extends AppModel {
 					FROM
 						{$this->tabela} m
 					WHERE
-						m.user_id = :user_id";
+						m.user_id = :user_id
+					ORDER BY
+						m.created_at DESC";
 
 			$stmt = $this->db->prepare($sql);
 			$stmt->bindValue(":user_id", $user_id);
@@ -105,6 +108,7 @@ class Message extends AppModel {
 
 	public function findByHashTag( $term )
 	{
+		$term = str_replace("#", "", $term);
 		try {
 			$sql = "SELECT 
 						m.id, m.text, m.user_id, m.created_at, u.login

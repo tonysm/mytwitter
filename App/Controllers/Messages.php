@@ -13,9 +13,9 @@ class Messages extends AppController {
 
 		$message = $this->request->getData('message');
 		$user = $this->Session->getUser();
+
 		$message['user_id'] = $user['id'];
-		// strip_tags
-		$message['text'] = strip_tags($message['text']);
+		
 		$this->Message = $this->loadModel("Message");
 
 		if ($this->Message->isValid( $message )) {
@@ -43,7 +43,6 @@ class Messages extends AppController {
 		$param = $this->request->getParam('hash');
 
 		if (!empty($param)) {
-			str_replace("#", "", $param);
 			$this->Message = $this->loadModel("Message");
 			$messages = $this->Message->findByHashTag( $param );
 			$this->set("Hashtag", new Hashtag());
@@ -60,10 +59,8 @@ class Messages extends AppController {
 		}
 		$data = $this->request->getData('find');
 		if (!empty($data['term'])) {
-			$term = str_replace("#", "", $data['term']);
 
 			$this->Message = $this->loadModel("Message");
-
 			$messages = $this->Message->findByHashTag( $term );
 		} else {
 			$this->Session->write("message", "Não entendemos o que você está procurando");
