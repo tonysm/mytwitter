@@ -41,14 +41,15 @@ class Messages extends AppController {
 		}
 
 		$param = $this->request->getParam('hash');
+		$page = (int) $this->request->getData('pg');
 
 		if (!empty($param)) {
 			$this->Message = $this->loadModel("Message");
-			$messages = $this->Message->findByHashTag( $param );
+			$messages = $this->Message->findByHashTag( $param, $page );
 			$this->set("Hashtag", new Hashtag());
 			$this->set("messages", $messages);
 		}
-
+		$this->set("term", $param);
 		$this->render("messages/find");
 	}
 
@@ -59,13 +60,13 @@ class Messages extends AppController {
 		}
 		$data = $this->request->getData('find');
 		if (!empty($data['term'])) {
-
 			$this->Message = $this->loadModel("Message");
-			$messages = $this->Message->findByHashTag( $term );
+			$messages = $this->Message->findByHashTag( $data['term'] );
 		} else {
 			$this->Session->write("message", "Não entendemos o que você está procurando");
 			$messages = array();
 		}
+		$this->set("term", $data['term']);
 		$this->set("Hashtag", new Hashtag());
 		$this->set('messages', $messages);
 		$this->render("messages/find");

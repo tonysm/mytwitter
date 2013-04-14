@@ -66,16 +66,52 @@ class Message extends AppModel {
 
 		return array();
 	}
+	public function findCountByUserIdAndFriends($user_id , array $friends)
+	{
+		try {
+			// creating the (?,?,?) to put as IN ()
+			$count_friends = count($friends);
+			if($count_friends) {
+				$in_query = implode(",", array_fill(1, $count_friends, "?"));
+				$in_query = " OR m.user_id IN ({$in_query}) ";
+			} else {
+				$in_query = "";
+			}
+			$sql = "SELECT 
+						COUNT(m.id) total
+					FROM
+						{$this->tabela} m
+					LEFT JOIN
+						{$this->tabela_users} u ON (m.user_id = u.id)
+					WHERE
+						m.user_id = ? {$in_query}";
+			$stmt = $this->db->prepare( $sql );
+			$stmt->bindValue(1, $user_id);
+			if ($count_friends) {
+				foreach($friends as $index => $id) {
+					$stmt->bindValue(($index + 2), $id);
+				}
+			}
+			$stmt->execute();
+			$res = $stmt->fetch(\PDO::FETCH_ASSOC);
+
+			return isset($res['total']) ? $res['total'] : 0;
+		} catch (\PDOException $e) {
+			
+		}
+
+		return 0;
+	}
 
 	public function findByUserIdAndFriends( $user_id, array $friends, $page = false )
 	{
+		$total = $this->findCountByUserIdAndFriends( $user_id, $friends );
+		$limit = 8;
 		if ($page !== false) {
 			$page = $page == 0 ? 1 : $page;
-			$limit = 10;
-			$start = $page == 1 ? 0 : ($page * $limit) / 2;
+			$start = (($page - 1) * $limit);
 		} else {
 			$start = 0;
-			$limit = 10;
 		}
 		try {
 			// creating the (?,?,?) to put as IN ()
@@ -114,8 +150,36 @@ class Message extends AppModel {
 		return array();
 	}
 
-	public function findByHashTag( $term )
+	public function findCountByHashTag( $term )
 	{
+		try {
+			$sql = "SELECT
+						COUNT(id) total
+					FROM
+						{$this->tabela}
+					WHERE
+						LOWER(text) LIKE LOWER(:text)";
+			$stmt = $this->db->prepare($sql);
+			$stmt->bindValue(":text", "%#{$term}%");
+			$stmt->execute();
+			$res = $stmt->fetch(\PDO::FETCH_ASSOC);
+			return isset($res['total']) ? $res['total'] : 0;
+		} catch (\PDOException $e) {
+			
+		}
+		return 0;
+	}
+
+	public function findByHashTag( $term , $page = false )
+	{
+		$total = $this->findCountByHashTag( $term );
+		$limit = 5;
+		if ($page !== false) {
+			$page = $page == 0 ? 1 : $page;
+			$start = (($page - 1) * $limit);
+		} else {
+			$start = 0;
+		}
 		$term = str_replace("#", "", $term);
 		try {
 			$sql = "SELECT 
@@ -128,7 +192,7 @@ class Message extends AppModel {
 						LOWER(m.text) LIKE LOWER(:term)
 					ORDER BY
 						m.created_at DESC
-					LIMIT 0, 50";
+					LIMIT {$start}, {$limit}";
 			$stmt = $this->db->prepare( $sql );
 			$stmt->bindValue(":term", "%#{$term}%");
 			$stmt->execute();
