@@ -2,8 +2,11 @@
 No relations with Twitter. I didn't implemented any Error handling or pagination (for now), cause it wasn't asked.
 
 ## Installation
+Do the list below:
 
-Remember to set the AllowOverride to All, and the VirtualHost has to point to the public directory
+* Set *AllowOverride* to *All*
+* Point the *VirtualHost* to the *public* directory
+* Run "*composer install*" to get Composer's autoload
 
 ## Database
 There's a file on the project root with the schema of the database, called *schema.sql*.
