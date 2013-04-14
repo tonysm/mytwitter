@@ -13,7 +13,7 @@ There's only two availiable methods, both using the HTTP GET verb, listed below
 
 HTTP VERB | Route | Content-type | Description
 --- | --- | --- | ---
-GET | /users/:id.json | application/json | Lists all the messages of a user single user
+GET | /users/:id.json | application/json | Lists all the messages of a single user
 GET | /friends/:id.json | application/json | Lists all the friends of a single user
 
 In both cases, you have to replace the :id with the user id you want. At least, but not last, I didn't implemented any Error handling or pagination (for now), cause it wasn't asked.
