@@ -13,7 +13,8 @@ There's only two availiable methods, both using the HTTP GET verb, listed below
 
 HTTP VERB | Route | Content-type | Description
 --- | --- | --- | ---
-GET | /users/:id.json | application/json | Lists all the messages of a single user
-GET | /friends/:id.json | application/json | Lists all the friends of a single user
+GET | /users/:id.json | application/json | Gets a single user
+GET | /users/:id/messages.json | application/json | Lists all the messages of a single user
+GET | /users/:id/friends.json | application/json | Lists all the friends of a single user
 
 In both cases, you have to replace the :id with the user id you want. At least, but not last, You don't have to be logged in to use the API.
