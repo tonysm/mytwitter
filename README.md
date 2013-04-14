@@ -9,7 +9,7 @@ Do the list below:
 * Run *"composer install"* to get Composer's autoload
 
 ## Database
-There's a file on the project root with the schema of the database, called *schema.sql*.
+There's a file on the project root with the schema of the database, called *schema.sql*. After creating the database, you have to configure it in the application. Do to so, just configure the *database.php* file that are in *App/database.php*.. oh, and you have to use MySQL.
 
 ## API
 There's only three availiable methods, both using the HTTP GET verb, listed below
