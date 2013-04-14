@@ -42,6 +42,28 @@ class Message extends AppModel {
 		return false;
 	}
 
+	public function findById($user_id)
+	{
+		try {
+			$sql = "SELECT
+						m.text, m.user_id, m.created_at
+					FROM
+						{$this->tabela} m
+					WHERE
+						m.user_id = :user_id";
+
+			$stmt = $this->db->prepare($sql);
+			$stmt->bindValue(":user_id", $user_id);
+			$stmt->execute();
+
+			return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+		} catch (\PDOException $e) {
+			
+		}
+
+		return array();
+	}
+
 	public function findByUserIdAndFriends( $user_id, array $friends )
 	{
 		try {

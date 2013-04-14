@@ -44,6 +44,27 @@ class User extends AppModel {
 		return true;
 	}
 	/**
+	 * checks if a user exists
+	 * @param int $id
+	 * @return boolean
+	 */
+	public function exists($id)
+	{
+		try {
+			$sql = "SELECT id FROM {$this->tabela} WHERE id = :id";
+			$stmt = $this->db->prepare($sql);
+			$stmt->bindValue(":id", $id);
+			$stmt->execute();
+
+			$res = $stmt->fetch(\PDO::FETCH_ASSOC);
+
+			return isset($res['id']);
+		} catch (\PDOException $e) {
+			
+		}
+		return false;
+	}
+	/**
 	 * checks if a login exists
 	 * true in case it exists, false otherwise
 	 * @param string $login
@@ -232,6 +253,36 @@ class User extends AppModel {
 		}
 
 		return false;
+	}
+
+	public function findFriends( $user_id )
+	{
+		try {
+			$friends = $this->findFriendsIds( $user_id );
+			$cont_friends = count($friends);
+			
+			if (!$cont_friends) {
+				return array();
+			}
+
+			$in_query = implode(",", array_fill(0, $cont_friends, "?"));
+			$sql = "SELECT
+						u.nome, u.login
+					FROM
+						{$this->tabela} u
+					WHERE
+						u.id IN ({$in_query})";
+			$stmt = $this->db->prepare($sql);
+			foreach ($friends as $index => $friend_id) {
+				$stmt->bindValue(($index + 1), $friend_id);
+			}
+			$stmt->execute();
+
+			return $stmt->fetchAll( \PDO::FETCH_ASSOC );
+		} catch (\PDOException $e) {
+			
+		}
+		return array();
 	}
 
 }

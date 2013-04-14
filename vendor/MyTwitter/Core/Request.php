@@ -1,7 +1,8 @@
 <?php
 namespace MyTwitter\Core;
 
-use MyTwitter\View\HtmlView;
+use MyTwitter\View\HtmlView,
+	MyTwitter\View\JsonView;
 
 /**
  * class responsable to map the request
@@ -14,6 +15,8 @@ class Request
 	private $action;
 	private $params;
 	private $extras;
+	private $ext = null;
+	private $ajax = false;
 	/**
 	 * @var the class responsable to render the view
 	 */
@@ -27,12 +30,32 @@ class Request
 	public function __construct( array $GET ) {
 		$this->uri = isset($GET['url']) ? $GET['url'] : 'Index/index';
 		unset($GET['url']);
+
+		// if the uri is something like example.com/user.json
+		// it will be executed as a ajax request
+		$this->_buildApiAppIfExtensionJson();
+
 		$this->explodedUri = explode('/', $this->uri);
 		$this->extras = $GET;
 		$this->_setController();
 		$this->_setAction();
 		$this->_setParams();
 		$this->_setViewClass();
+	}
+	/**
+	 * sets the $this->ext to json and $this->ajax to TRUE
+	 * if the URI contains .json at the end
+	 * @return void
+	 */
+	private function _buildApiAppIfExtensionJson()
+	{
+		$ext = "json";
+		$pattern = "/^.*\.json$/";
+		if (preg_match($pattern, $this->uri)) {
+			$this->uri = str_replace(".json", "", $this->uri);
+			$this->ext = $ext;
+			$this->ajax = true;
+		}
 	}
 	/**
 	 * returns the controller responsable for the request
@@ -92,6 +115,10 @@ class Request
 		$this->controller = (isset($this->explodedUri[0]) && !empty($this->explodedUri[0])) 
 			? ucfirst(strtolower(array_shift($this->explodedUri))) 
 			: 'Index';
+			
+		if ($this->ajax) {
+			$this->controller = "Api\\" . $this->controller;
+		}
 	}
 
 	/**
@@ -105,10 +132,14 @@ class Request
 	private function _setAction()
 	{
 		$http_method = $this->getHttpMethod();
-		$this->action = (isset($this->explodedUri[0]) && !empty($this->explodedUri[0])) 
-			? strtolower(array_shift($this->explodedUri)) 
-			: 'index';
-		$this->action = $http_method . '_' . $this->action;
+		if (!$this->ajax) {
+			$this->action = (isset($this->explodedUri[0]) && !empty($this->explodedUri[0])) 
+				? strtolower(array_shift($this->explodedUri)) 
+				: 'index';
+			$this->action = $http_method . '_' . $this->action;
+		} else {
+			$this->action = $http_method . '_index';
+		}
 	}
 	/**
 	 * gets the rest of the URI as params
@@ -117,9 +148,13 @@ class Request
 	private function _setParams()
 	{
 		if (isset($this->explodedUri[0])) {
-			foreach($this->explodedUri as $param) {
-				$exp = explode(":", $param);
-				$this->params[$exp[0]] = $exp[1];
+			if (!$this->ajax) {
+				foreach($this->explodedUri as $param) {
+					$exp = explode(":", $param);
+					$this->params[$exp[0]] = $exp[1];
+				}
+			} else {
+				$this->params['id'] = $this->explodedUri[0];
 			}
 		}
 		unset($this->explodedUri);
@@ -128,7 +163,11 @@ class Request
 	 * @return MyTwitter\View\View
 	 */
 	private function _setViewClass() {
-		$this->viewClass = new HtmlView();
+		if ($this->ajax) {
+			$this->viewClass = new JsonView();
+		} else {
+			$this->viewClass = new HtmlView();
+		}
 	}
 	/**
 	 * returns the http verb of the request
