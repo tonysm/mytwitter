@@ -6,7 +6,7 @@ Do the list below:
 
 * Set *AllowOverride* to *All*
 * Point the *VirtualHost* to the *public* directory
-* Run "*composer install*" to get Composer's autoload
+* Run *"composer install"* to get Composer's autoload
 
 ## Database
 There's a file on the project root with the schema of the database, called *schema.sql*.
