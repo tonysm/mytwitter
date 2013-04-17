@@ -15,8 +15,8 @@ class Message extends AppModel {
 			return false;
 		}
 		$data['text'] = strip_tags($data['text']);
-
-		if (!isset($data['user_id']) || empty($data['user_id']) || !is_int($data['user_id'])) {
+		$data['user_id'] = isset($data['user_id']) ? (int) $data['user_id'] : '';
+		if (!isset($data['user_id']) || empty($data['user_id'])) {
 			$this->error = "Você precisa estar logado para publicar";
 			return false;
 		}

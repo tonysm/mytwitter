@@ -32,9 +32,20 @@ class Session {
 	 */
 	public function write($key, $value) {
 		// authentication key
-		if($key != 'user') {
+		if($key != 'user' && $key != 'message') {
 			$this->store[$key] = $value;
 		}
+	}
+	/**
+	 * writes a message to be shown to the user
+	 * @param string $message
+	 * @param string $class = ""
+	 * @return void
+	 */
+	public function writeMessage($message, $class = "")
+	{
+		$this->store['message'] = $message;
+		$this->store['message-class'] = $class;
 	}
 	/**
 	 * reads store's stored data

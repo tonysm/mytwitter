@@ -20,17 +20,15 @@ class Messages extends AppController {
 
 		if ($this->Message->isValid( $message )) {
 			if( $this->Message->save($message) ) {
-				$this->Session->write("message", "Mensagem publicada com sucesso!");
-				$this->Session->write("message-class", "success");
+				$this->Session->writeMessage("Mensagem publicada com sucesso!", "success");
 			} else {
-				$this->Session->write("message", "Ocorreu um erro ao tentar publicar essa mensagem");
-				$this->Session->write("message-class", "error");
+				$this->Session->writeMessage("Ocorreu um erro ao tentar publicar essa mensagem", "error");
 			}
 			
 		} else {
-			$this->Session->write("message", $this->Message->getValidationError());
-			$this->Session->write("message-class", "error");
+			$this->Session->writeMessage($this->Message->getValidationError(), "error");
 		}
+
 		return $this->redirect("/Users");
 	}
 
@@ -63,7 +61,7 @@ class Messages extends AppController {
 			$this->Message = $this->loadModel("Message");
 			$messages = $this->Message->findByHashTag( $data['term'] );
 		} else {
-			$this->Session->write("message", "Não entendemos o que você está procurando");
+			$this->Session->writeMessage("Não entendemos o que você está procurando");
 			$messages = array();
 		}
 		$this->set("term", $data['term']);

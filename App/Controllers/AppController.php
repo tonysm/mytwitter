@@ -19,8 +19,7 @@ class AppController extends Controller
 	public function isAllowed()
 	{
 		if (!$this->Session->isAuthenticated()) {
-			$this->Session->write("message", "Você precisa estar logado");
-			$this->Session->write("message-class", "error");
+			$this->Session->writeMessage("Você precisa estar logado", "error");
 			return false;
 		}
 

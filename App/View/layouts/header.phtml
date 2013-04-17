@@ -37,7 +37,7 @@
 	<?php
 		$message = $Session->read('message');
 		$messageCls = $Session->read('message-class');
-		$Session->write("message", "");
+		$Session->writeMessage("", "");
 		if($message):
 	?>
 	<div class="row">

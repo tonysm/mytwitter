@@ -21,19 +21,16 @@ class Users extends AppController
 				$user = $this->User->findByLoginAndSenha($data['login'], $data['senha']);
 				$this->Session->authenticate($user);
 				// if save it, send him to his home
-				$this->Session->write("message", "Seja bem-vindo ao MyTwitter");
-				$this->Session->write("message-class", "success");
+				$this->Session->writeMessage("Seja bem-vindo ao MyTwitter", "success");
 				return $this->redirect("Users/index");
 			} else {
 				// if cannot save it, send a message
-				$this->Session->write("message", "Não conseguiu salvar");
-				$this->Session->write("message-class", "error");
+				$this->Session->writeMessage("Não conseguiu salvar", "error");
 				return $this->redirect("/");
 			}
 		}
 		// if invalid, send a message
-		$this->Session->write("message", $this->User->getValidationError());
-		$this->Session->write("message-class", "error");
+		$this->Session->writeMessage( $this->User->getValidationError(), "error" );
 		return $this->redirect("/");
 	}
 	/**
@@ -71,18 +68,15 @@ class Users extends AppController
 			if(!empty($user)) {
 				$nome = explode(' ',$user['nome'])[0];
 				$this->Session->authenticate($user);
-				$this->Session->write("message", "Olá, {$nome}. Seja bem-vindo!");
-				$this->Session->write("message-class", "success");
+				$this->Session->writeMessage("Olá, {$nome}. Seja bem-vindo!", "success");
 				return $this->redirect("/Users/index");
 			}
 
-			$this->Session->write("message", "Usuário ou senha inválidos");
-			$this->Session->write("message-class", "error");
+			$this->Session->writeMessage("Usuário ou senha inválidos", "error");
 			return $this->redirect("/");
 		}
 
-		$this->Session->write("message", "Opps.. preencha o login e a senha");
-		$this->Session->write("message-class", "error");
+		$this->Session->writeMessage("Opps.. preencha o login e a senha", "error");
 		return $this->redirect("/");
 	}
 	/**
@@ -93,8 +87,7 @@ class Users extends AppController
 	{
 		if($this->isAllowed()) {
 			$this->Session->logout();
-			$this->Session->write("message", "Volte sempre");
-			$this->Session->write("message-class", "info");
+			$this->Session->writeMessage("Volte sempre", "info");
 		}
 		return $this->redirect("/");
 	}
@@ -145,8 +138,7 @@ class Users extends AppController
 		$user = $this->Session->getUser();
 		// am I trying to follow me?
 		if ($data['user_id'] === $user['id'] ) {
-			$this->Session->write("message", "Você não pode seguir você mesmo");
-			$this->Session->write("message-class", "info");
+			$this->Session->writeMessage("Você não pode seguir você mesmo", "info");
 			return $this->redirect("/Users");
 		}
 
@@ -154,13 +146,11 @@ class Users extends AppController
 
 		if ($this->User->follow($user['id'], $data['user_id'])) {
 			$nome = $this->User->findNomeById($data['user_id']);
-			$this->Session->write("message", "Agora você já está seguindo <strong>{$nome}</strong>");
-			$this->Session->write("message-class", "success");
+			$this->Session->writeMessage("Agora você já está seguindo <strong>{$nome}</strong>", "success");
 			return $this->redirect("/Users");
 		}
 
-		$this->Session->write("message", "Ocorreu um erro ao tentar seguir o usuário");
-		$this->Session->write("message-class", "error");
+		$this->Session->writeMessage("Ocorreu um erro ao tentar seguir o usuário", "error");
 		return $this->redirect("/Users");
 	}
 
@@ -175,8 +165,7 @@ class Users extends AppController
 
 		// am I trying to unfollow me?
 		if ($data['user_id'] === $user['id']) {
-			$this->Session->write("message", "Você não pode deixar de seguir você mesmo");
-			$this->Session->write("message-class", "info");
+			$this->Session->writeMessage("Você não pode deixar de seguir você mesmo", "info");
 			return $this->redirect("/Users");
 		}
 
@@ -184,13 +173,11 @@ class Users extends AppController
 
 		if ($this->User->unfollow($user['id'], $data['user_id'])) {
 			$nome = $this->User->findNomeById($data['user_id']);
-			$this->Session->write("message", "Agora você não está seguindo <strong>{$nome}</strong>");
-			$this->Session->write("message-class", "info");
+			$this->Session->writeMessage("Agora você não está seguindo <strong>{$nome}</strong>", "info");
 			return $this->redirect("/Users");
 		}
 
-		$this->Session->write("message", "Ocorreu um erro ao tentar deixar de seguir um usuário");
-		$this->Session->write("message-class", "error");
+		$this->Session->writeMessage("Ocorreu um erro ao tentar deixar de seguir um usuário", "error");
 		return $this->redirect("/Users");
 	}
 }
