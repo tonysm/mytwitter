@@ -4,12 +4,21 @@ namespace App\Controllers\Components;
 
 class Session {
 	/**
+	 * @var array
+	 */
+	protected $session;
+
+	public function __construct(array &$session)
+	{
+		$this->session =& $session;
+	}
+	/**
 	 * get the logged in user
 	 * @return array
 	 */
 	public function getUser()
 	{
-		return isset($_SESSION['user']) ? $_SESSION['user'] : array();
+		return isset($this->session['user']) ? $this->session['user'] : array();
 	}
 	/**
 	 * writes in the session
@@ -20,7 +29,7 @@ class Session {
 	public function write($key, $value) {
 		// authentication key
 		if($key != 'user') {
-			$_SESSION[$key] = $value;
+			$this->session[$key] = $value;
 		}
 	}
 	/**
@@ -29,7 +38,7 @@ class Session {
 	 * @return mixed
 	 */
 	public function read($key) {
-		return isset($_SESSION[$key]) ? $_SESSION[$key] : '';
+		return isset($this->session[$key]) ? $this->session[$key] : '';
 	}
 	/**
 	 * destroys the session
@@ -44,7 +53,7 @@ class Session {
 	 */
 	public function isAuthenticated()
 	{
-		return isset($_SESSION['user']);
+		return isset($this->session['user']);
 	}
 	/**
 	 * authenticates the user, storing everything in session
@@ -53,11 +62,11 @@ class Session {
 	 */
 	public function authenticate(array $user)
 	{
-		$_SESSION['user'] = $user;
+		$this->session['user'] = $user;
 	}
 
 	public function logout()
 	{
-		unset($_SESSION['user']);
+		unset($this->session['user']);
 	}
 }
