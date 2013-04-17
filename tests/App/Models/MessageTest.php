@@ -115,7 +115,7 @@ class MessageTest extends PHPUnit_Framework_TestCase {
 		$this->assertFalse($this->Model->save( $message ));
 	}
 
-	public function testsShouldFetchMessagesCorrectlyByUserId()
+	public function testShouldFetchMessagesCorrectlyByUserId()
 	{
 		$message = array(
 			array(
