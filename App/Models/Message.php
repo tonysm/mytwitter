@@ -49,6 +49,9 @@ class Message extends AppModel {
 	public function findByUserId($user_id)
 	{
 		try {
+			if(!$user_id) 
+				throw new \Exception("Erro Processando o ID");
+				
 			$sql = "SELECT
 						m.text, m.user_id, m.created_at
 					FROM
@@ -63,7 +66,7 @@ class Message extends AppModel {
 			$stmt->execute();
 
 			return $stmt->fetchAll(\PDO::FETCH_ASSOC);
-		} catch (\PDOException $e) {
+		} catch (\Exception $e) {
 			
 		}
 

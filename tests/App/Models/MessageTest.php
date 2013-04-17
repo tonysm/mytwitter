@@ -114,4 +114,58 @@ class MessageTest extends PHPUnit_Framework_TestCase {
 		$message = array();
 		$this->assertFalse($this->Model->save( $message ));
 	}
+
+	public function testsShouldFetchMessagesCorrectlyByUserId()
+	{
+		$message = array(
+			array(
+				'text' => 'lorem ipsum 1',
+				'user_id' => 1
+			),
+			array(
+				'text' => 'lorem ipsum 2',
+				'user_id' => 2
+			),
+			array(
+				'text' => 'lorem ipsum 3',
+				'user_id' => 1
+			)
+		);
+
+		$this->Model->save($message[0]);
+		$this->Model->save($message[1]);
+		$this->Model->save($message[2]);
+
+		$db_messages = $this->Model->findByUserId(1);
+
+		$this->assertEquals(2, count($db_messages), 'Não está filtrando corretamente por usuário');
+	}
+
+	public function testShouldFailFetchingMessagesByUserIdWithoutUserId()
+	{
+		$message = array(
+			array(
+				'text' => 'lorem ipsum 1',
+				'user_id' => 1
+			),
+			array(
+				'text' => 'lorem ipsum 2',
+				'user_id' => 2
+			),
+			array(
+				'text' => 'lorem ipsum 3',
+				'user_id' => 1
+			)
+		);
+
+		$this->Model->save($message[0]);
+		$this->Model->save($message[1]);
+		$this->Model->save($message[2]);
+
+		$db_messages = $this->Model->findByUserId(0);
+
+		$this->assertEquals(0, count($db_messages), 'Está trazendo mensagens sem passar user_id');
+	}
+
+
 }
