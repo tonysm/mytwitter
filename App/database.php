@@ -1,9 +1,18 @@
 <?php
 
 return array(
-	'host' => 'localhost',
-	'dbname' => 'mytwitter',
-	'user' => 'root',
-	'pass' => 'root',
-	'driver' => 'mysql'
+	'default' => array(
+		'host' => 'localhost',
+		'dbname' => 'mytwitter',
+		'user' => 'root',
+		'pass' => 'root',
+		'driver' => 'mysql'
+	),
+	'test' => array(
+		'host' => 'localhost',
+		'dbname' => 'mytwitter-test',
+		'user' => 'root',
+		'pass' => 'root',
+		'driver' => 'mysql'
+	)
 );

@@ -3,10 +3,10 @@
 namespace MyTwitter\Di;
 
 class Container {
-	public static function getDb() {
+	public static function getDb( $connection = "default" ) {
 		$dbdata = require APP_DIR . "database.php";
-		extract($dbdata);
-		if($driver == 'mysql') {
+		extract($dbdata[ $connection ]);
+		if(isset($driver) && $driver == 'mysql') {
 			return new \PDO("mysql:host={$host};dbname={$dbname}", $user, $pass);
 		}
 
@@ -18,6 +18,13 @@ class Container {
 		$modelName = ucfirst(strtolower($modelName));
 		$model = "App\\Models\\{$modelName}";
 		return new $model( self::getDb() );
+	}
+
+	public static function getModelToTest($modelName)
+	{
+		$modelName = ucfirst(strtolower($modelName));
+		$model = "App\\Models\\{$modelName}";
+		return new $model( self::getDb( "test" ) );
 	}
 
 	public static function getComponent( $component )

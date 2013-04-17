@@ -1,17 +1,11 @@
 <?php
 
-class PDOMock extends PDO {
-	public function __construct()
-	{}
-}
-
 class MessageTest extends PHPUnit_Framework_TestCase {
 	public $Model;
 
 	public function setUp()
 	{
-		$pdoMock = $this->getMock("PDOMock", array("fetchAll", "fetch", "prepare"));
-		$this->Model = new App\Models\Message( $pdoMock );
+		$this->Model = MyTwitter\Di\Container::getModelToTest('Message');
 	}
 
 	public function testClassType()
