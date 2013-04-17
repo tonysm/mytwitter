@@ -1,11 +1,13 @@
 <?php
 
+use MyTwitter\Di\Container;
+
 class MessageTest extends PHPUnit_Framework_TestCase {
 	public $Model;
 
 	public function setUp()
 	{
-		$this->Model = MyTwitter\Di\Container::getModelToTest('Message');
+		$this->Model = Container::getModelToTest('Message');
 	}
 
 	public function testClassType()
