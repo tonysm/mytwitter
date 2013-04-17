@@ -1,3 +1,4 @@
 vendor/autoload.php
 vendor/composer
 logs
+public/report
