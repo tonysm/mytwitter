@@ -8,6 +8,37 @@ class MessageTest extends PHPUnit_Framework_TestCase {
 	public function setUp()
 	{
 		$this->Model = Container::getModelToTest('Message');
+
+		// recreates the database the database
+		$this->_buildDb();
+		// inserts users
+		$this->_insertUsers();
+	}
+
+	public function tearDown()
+	{
+		$this->Model = null;
+		$this->_dropDb();
+	}
+
+	private function _dropDb() {
+		$db = Container::getDb('test');
+		$db->query("DROP TABLE messages;");
+		$db->query("DROP TABLE users_friends;");
+		$db->query("DROP TABLE users;");
+	}
+
+	public function _buildDb()
+	{
+		$db = Container::getDb('test');
+		$schema = file_get_contents(CORE_DIR . "schema.sql");
+		$db->query( $schema );
+	}
+
+	public function _insertUsers()
+	{
+		$db = Container::getDb('test');
+		$db->query("INSERT INTO users (nome, login, senha) VALUES ('lorem ipsum 1', 'lorem1', 'lasdmklasmd'), ('lorem ipsum 2', 'lorem2', 'lasdmklasmd')");
 	}
 
 	public function testClassType()
@@ -67,5 +98,20 @@ class MessageTest extends PHPUnit_Framework_TestCase {
 	{
 		$message = array('user_id' => 1, 'text' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officiis, praesentium, quas, sequi, labore fuga fugit officia dolor minus saepe nesciunt deserunt ullam aliquid eos incidunt accusamus voluptas culpa qui reprehenderit.');
 		$this->assertFalse( $this->Model->isValid( $message ) , 'Está validando mensagem com mais de 140 caracteres');
+	}
+
+	public function testSavesMessageCorrectly()
+	{
+		$message = array(
+			'text' => 'lorem ipsum dolor',
+			'user_id' => 1
+		);
+		$this->assertTrue( $this->Model->save( $message ) );
+	}
+	
+	public function testFailsWhenSavingInvalidMessage()
+	{
+		$message = array();
+		$this->assertFalse($this->Model->save( $message ));
 	}
 }

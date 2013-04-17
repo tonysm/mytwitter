@@ -4,6 +4,7 @@ error_reporting(-1);
 define("DS", DIRECTORY_SEPARATOR);
 define("PUBLIC_DIR", dirname(__DIR__) . DS . 'public' . DS);
 define("APP_DIR", dirname(PUBLIC_DIR) . DS . "App" . DS);
+define("CORE_DIR", dirname(APP_DIR) . DS);
 define("VENDOR_DIR", dirname(PUBLIC_DIR) . DS . "vendor" . DS);
 define("VIEWS_DIR", APP_DIR . "View" . DS);
 define("CONTROLLERS_DIR", APP_DIR . "Controllers" . DS);
