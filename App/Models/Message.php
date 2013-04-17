@@ -10,13 +10,13 @@ class Message extends AppModel {
 
 	public function isValid(array $data)
 	{
-		$data['text'] = strip_tags($data['text']);
 		if (!isset($data['text']) || empty($data['text'])) {
 			$this->error = "Mensagem não pode ser publicada em branco";
 			return false;
 		}
+		$data['text'] = strip_tags($data['text']);
 
-		if (!isset($data['user_id']) || empty($data['user_id'])) {
+		if (!isset($data['user_id']) || empty($data['user_id']) || !is_int($data['user_id'])) {
 			$this->error = "Você precisa estar logado para publicar";
 			return false;
 		}
