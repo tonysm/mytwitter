@@ -1,16 +1,20 @@
 <?php
 
-namespace App\Controllers\Components;
+namespace MyTwitter\Controllers\Components;
 
 class Session {
 	/**
 	 * @var array
 	 */
-	protected $session;
-
-	public function __construct(array &$session)
+	protected $store;
+	/**
+	 * constructor receives an array to store its data
+	 * @param array &$store
+	 * @return void
+	 */
+	public function __construct(array &$store)
 	{
-		$this->session =& $session;
+		$this->store =& $store;
 	}
 	/**
 	 * get the logged in user
@@ -18,10 +22,10 @@ class Session {
 	 */
 	public function getUser()
 	{
-		return isset($this->session['user']) ? $this->session['user'] : array();
+		return isset($this->store['user']) ? $this->store['user'] : array();
 	}
 	/**
-	 * writes in the session
+	 * writes in the store
 	 * @param string $key
 	 * @param mixed $value
 	 * @return void
@@ -29,23 +33,23 @@ class Session {
 	public function write($key, $value) {
 		// authentication key
 		if($key != 'user') {
-			$this->session[$key] = $value;
+			$this->store[$key] = $value;
 		}
 	}
 	/**
-	 * reads session's stored data
+	 * reads store's stored data
 	 * @param string $key
 	 * @return mixed
 	 */
 	public function read($key) {
-		return isset($this->session[$key]) ? $this->session[$key] : '';
+		return isset($this->store[$key]) ? $this->store[$key] : '';
 	}
 	/**
-	 * destroys the session
+	 * destroys the store
 	 * @return void
 	 */
 	public function destroy() {
-		session_destroy();
+		store_destroy();
 	}
 	/**
 	 * checks if the user is authenticaded
@@ -53,20 +57,20 @@ class Session {
 	 */
 	public function isAuthenticated()
 	{
-		return isset($this->session['user']);
+		return isset($this->store['user']);
 	}
 	/**
-	 * authenticates the user, storing everything in session
+	 * authenticates the user, storing everything in store
 	 * @param array $user user data array
 	 * @return void
 	 */
 	public function authenticate(array $user)
 	{
-		$this->session['user'] = $user;
+		$this->store['user'] = $user;
 	}
 
 	public function logout()
 	{
-		unset($this->session['user']);
+		unset($this->store['user']);
 	}
 }

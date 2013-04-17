@@ -30,13 +30,26 @@ class Container {
 	public static function getComponent( $component )
 	{
 		$component = ucfirst(strtolower($component));
-		$componentFile = "App\\Controllers\\Components\\{$component}";
+
+		if (self::componentExistsInApp( $component )) {
+			$componentFile = "App\\Controllers\\Components\\{$component}";
+		} else {
+			$componentFile = "MyTwitter\\Controllers\\Components\\{$component}";
+		}
 
 		switch($component) {
-			case "Auth":
 			case "Session":
 				return new $componentFile( $_SESSION );
 			break;
 		}
+	}
+	/**
+	 * checks if a components exists in App
+	 * @param string $component
+	 * @return boolean
+	 */
+	public static function componentExistsInApp( $component )
+	{
+		return file_exists(CONTROLLERS_DIR . "Components" . DS . $component . ".php");
 	}
 }
