@@ -167,10 +167,4 @@ class MessageTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals(0, count($db_messages), 'Está trazendo mensagens sem passar user_id');
 	}
 
-	public function testTravisWorks()
-	{
-		$this->assertFalse(true, "Travis funciona!");
-	}
-
-
 }
