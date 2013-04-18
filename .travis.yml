@@ -3,15 +3,6 @@ language: php
 php:
   - 5.4
 
-env:
-  - DB=mysql
-
-matrix:
-  include:
-    - php: 5.4
-      env:
-        - PHPCS=1
-
 before_script:
   - wget http://getcomposer.org/composer.phar
   - php composer.phar install
