@@ -1,4 +1,5 @@
-# This app is meant to be like twitter, just for fun
+# MyTwitter [![Build Status](https://travis-ci.org/tonyzrp/mytwitter.png?branch=master)](https://travis-ci.org/tonyzrp/mytwitter)
+## This app is meant to be like twitter, just for fun
 No relations with Twitter. I didn't implemented any Error handling or pagination (for now), cause it wasn't asked.
 
 ## Installation
