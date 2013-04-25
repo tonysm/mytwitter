@@ -60,7 +60,7 @@ class Session {
 	 * @return void
 	 */
 	public function destroy() {
-		store_destroy();
+		session_destroy();
 	}
 	/**
 	 * checks if the user is authenticaded
