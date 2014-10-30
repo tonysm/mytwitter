@@ -80,8 +80,10 @@ class Controller
 	/**
 	 * redirects the user
 	 * @param string $route
+     * @return mixed
 	 */
-	protected function redirect( $route ) {
+	protected function redirect( $route )
+    {
 		header("Location:{$route}");
 		exit();
 	}

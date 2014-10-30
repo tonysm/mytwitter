@@ -4,9 +4,11 @@ namespace MyTwitter\Di;
 
 class Container {
 	public static function getDb( $connection = "default" ) {
-		$dbdata = require APP_DIR . "database.php";
+		$dbdata = require CONFIG_DIR . "database.php";
 		extract($dbdata[ $connection ]);
-		if(isset($driver) && $driver == 'mysql') {
+
+		if(isset($driver) && $driver == 'mysql')
+        {
 			return new \PDO("mysql:host={$host};dbname={$dbname}", $user, $pass);
 		}
 

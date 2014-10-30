@@ -4,10 +4,12 @@ namespace App\Controllers;
 
 use App\View\Helpers\Hashtag;
 
-class Messages extends AppController {
+class Messages extends AppController
+{
 	public function post_index()
 	{
-		if (!$this->isAllowed()) {
+		if ( ! $this->isAllowed())
+        {
 			return $this->redirect("/");
 		}
 

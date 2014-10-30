@@ -6,6 +6,7 @@ session_start();
 define("DS", DIRECTORY_SEPARATOR);
 define("PUBLIC_DIR", __DIR__ . DS);
 define("APP_DIR", dirname(PUBLIC_DIR) . DS . "app" . DS);
+define("CONFIG_DIR", dirname(PUBLIC_DIR) . DS . "config" . DS);
 define("VENDOR_DIR", dirname(PUBLIC_DIR) . DS . "vendor" . DS);
 define("VIEWS_DIR", APP_DIR . "View" . DS);
 define("CONTROLLERS_DIR", APP_DIR . "Controllers" . DS);
