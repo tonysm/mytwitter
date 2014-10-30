@@ -43,7 +43,7 @@ class MessageTest extends PHPUnit_Framework_TestCase {
 
 	public function testClassType()
 	{
-		$this->assertInstanceOf("App\\Models\\Message", $this->Model);
+		$this->assertInstanceOf("app\\Models\\Message", $this->Model);
 	}
 
 	public function validMessagesDP()

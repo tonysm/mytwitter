@@ -44,7 +44,7 @@ class Container {
 		}
 	}
 	/**
-	 * checks if a components exists in App
+	 * checks if a components exists in app
 	 * @param string $component
 	 * @return boolean
 	 */

@@ -28,7 +28,7 @@ class Controller
 	 * @return MyTwitter\Controllers\Controller
 	 */ 
 	public static function getController( $controllerName, Request $request ) {
-		$controller = "App\\Controllers\\{$controllerName}";
+		$controller = "app\\Controllers\\{$controllerName}";
 		if(self::controlllerExists( $controllerName )) {
 			return new $controller( $request );
 		}

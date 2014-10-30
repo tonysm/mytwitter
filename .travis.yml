@@ -8,7 +8,7 @@ before_script:
   - php composer.phar install
   - sh -c "mysql -e 'CREATE DATABASE mytwittertravis;'"
   - sh -c "mysql -u travis mytwittertravis < schema.sql"
-  - echo "<?php return array('test' => array('driver' => 'mysql', 'user' => 'travis', 'pass'=>'', 'dbname' => 'mytwittertravis', 'host'=>'localhost'));" > App/database.php
+  - echo "<?php return array('test' => array('driver' => 'mysql', 'user' => 'travis', 'pass'=>'', 'dbname' => 'mytwittertravis', 'host'=>'localhost'));" > app/database.php
 
 script:
   - phpunit
